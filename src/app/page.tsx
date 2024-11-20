@@ -48,8 +48,8 @@ export default function Home() {
   }, [activeCategory]);
 
   return (
-    <div className="flex flex-col min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-screen-md mx-auto">
-      <h1>Inbox</h1>
+    <div className="flex flex-col min-h-screen p-8 pb-20 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-screen-sm mx-auto">
+      <h1 className="text-4xl font-bold">Inbox</h1>
       <motion.div className="flex gap-4" layout>
         {categories.map((category) => (
           <CategoryBadge
@@ -67,6 +67,7 @@ export default function Home() {
       </motion.div>
       <AnimatePresence initial={false} mode="popLayout">
         <motion.div
+          className="divide-y-[1px]"
           key={activeCategory}
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -74,10 +75,10 @@ export default function Home() {
           transition={{ type: "spring", bounce: 0, duration: 0.5 }}
         >
           {emails.map((email) => (
-            <div key={email.id}>
-              <h2>{email.sender}</h2>
+            <div className="flex flex-col gap-1 py-3" key={email.id}>
+              <h2 className="font-medium text-lg">{email.sender}</h2>
               <h3>{email.subject}</h3>
-              <p>{email.description}</p>
+              <p className="text-sm text-neutral-500">{email.description}</p>
             </div>
           ))}
         </motion.div>
