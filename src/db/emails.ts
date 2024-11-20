@@ -1,4 +1,12 @@
-const emails = [
+export type Email = {
+  id: number;
+  category: string;
+  sender: string;
+  subject?: string | undefined;
+  description: string;
+};
+
+const emails: Email[] = [
   {
     id: 1,
     category: "primary",

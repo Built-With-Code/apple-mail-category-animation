@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllEmails } from "@/db/emails";
+import { Email, getAllEmails } from "@/db/emails";
 import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import {
   Megaphone,
@@ -39,7 +39,7 @@ const categories = [
 
 export default function Home() {
   const allEmails = getAllEmails();
-  const [emails, setEmails] = useState(allEmails);
+  const [emails, setEmails] = useState<Email[]>([]);
 
   const [activeCategory, setActiveCategory] = useState("primary");
 
@@ -48,7 +48,7 @@ export default function Home() {
   }, [activeCategory]);
 
   return (
-    <div className="flex flex-col justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] max-w-screen-md mx-auto">
       <h1>Inbox</h1>
       <motion.div className="flex gap-4" layout>
         {categories.map((category) => (
