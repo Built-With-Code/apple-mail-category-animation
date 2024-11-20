@@ -10,6 +10,33 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+const categories = [
+  {
+    name: "primary",
+    displayName: "Primary",
+    accentColor: "rgb(0,122,255)",
+    icon: <UserRound />,
+  },
+  {
+    name: "transactions",
+    displayName: "Transactions",
+    accentColor: "rgb(52,199,89)",
+    icon: <ShoppingCart />,
+  },
+  {
+    name: "updates",
+    displayName: "Updates",
+    accentColor: "rgb(88,86,214)",
+    icon: <MessageSquareText />,
+  },
+  {
+    name: "promotions",
+    displayName: "Promotions",
+    accentColor: "rgb(255,45,85)",
+    icon: <Megaphone />,
+  },
+];
+
 export default function Home() {
   const allEmails = getAllEmails();
   const [emails, setEmails] = useState(allEmails);
@@ -24,58 +51,19 @@ export default function Home() {
     <div className="flex flex-col justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <h1>Inbox</h1>
       <motion.div className="flex gap-4" layout>
-        <CategoryBadge
-          isActive={activeCategory === "primary"}
-          accentColor="rgb(0,122,255)"
-          onClick={() => {
-            setActiveCategory("primary");
-          }}
-          id="primary"
-        >
-          <motion.div layout>
-            <UserRound />
-          </motion.div>
-          <motion.span data-slot="label">Primary</motion.span>
-        </CategoryBadge>
-        <CategoryBadge
-          isActive={activeCategory === "transactions"}
-          accentColor="rgb(52,199,89)"
-          onClick={() => {
-            setActiveCategory("transactions");
-          }}
-          id="transactions"
-        >
-          <motion.div layout>
-            <ShoppingCart />
-          </motion.div>
-          <span data-slot="label">Transactions</span>
-        </CategoryBadge>
-        <CategoryBadge
-          isActive={activeCategory === "updates"}
-          accentColor="rgb(88,86,214)"
-          onClick={() => {
-            setActiveCategory("updates");
-          }}
-          id="updates"
-        >
-          <motion.div layout>
-            <MessageSquareText />
-          </motion.div>
-          <span data-slot="label">Updates</span>
-        </CategoryBadge>
-        <CategoryBadge
-          isActive={activeCategory === "promotions"}
-          accentColor="rgb(255,45,85)"
-          onClick={() => {
-            setActiveCategory("promotions");
-          }}
-          id="promotions"
-        >
-          <motion.div layout>
-            <Megaphone />
-          </motion.div>
-          <span data-slot="label">Promotions</span>
-        </CategoryBadge>
+        {categories.map((category) => (
+          <CategoryBadge
+            isActive={activeCategory === category.name}
+            accentColor={category.accentColor}
+            onClick={() => {
+              setActiveCategory(category.name);
+            }}
+            id={category.name}
+          >
+            <motion.div layout>{category.icon}</motion.div>
+            <motion.span data-slot="label">{category.displayName}</motion.span>
+          </CategoryBadge>
+        ))}
       </motion.div>
       <AnimatePresence initial={false} mode="popLayout">
         <motion.div
