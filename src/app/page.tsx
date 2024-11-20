@@ -1,19 +1,27 @@
 "use client";
 
-import { HTMLMotionProps, motion } from "framer-motion";
+import { getAllEmails } from "@/db/emails";
+import { AnimatePresence, HTMLMotionProps, motion } from "framer-motion";
 import {
   Megaphone,
   MessageSquareText,
   ShoppingCart,
   UserRound,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const allEmails = getAllEmails();
+  const [emails, setEmails] = useState(allEmails);
+
   const [activeCategory, setActiveCategory] = useState("primary");
 
+  useEffect(() => {
+    setEmails(allEmails.filter((e) => e.category === activeCategory));
+  }, [activeCategory]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <h1>Inbox</h1>
       <motion.div className="flex gap-4" layout>
         <CategoryBadge
@@ -53,7 +61,6 @@ export default function Home() {
           <motion.div layout>
             <MessageSquareText />
           </motion.div>
-
           <span data-slot="label">Updates</span>
         </CategoryBadge>
         <CategoryBadge
@@ -70,6 +77,23 @@ export default function Home() {
           <span data-slot="label">Promotions</span>
         </CategoryBadge>
       </motion.div>
+      <AnimatePresence initial={false} mode="popLayout">
+        <motion.div
+          key={activeCategory}
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ opacity: 0, scale: 0.9, filter: "blur(8px)" }}
+          transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+        >
+          {emails.map((email) => (
+            <div key={email.id}>
+              <h2>{email.sender}</h2>
+              <h3>{email.subject}</h3>
+              <p>{email.description}</p>
+            </div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -83,8 +107,8 @@ const CategoryBadge = ({
 }: { isActive?: boolean; accentColor: string } & HTMLMotionProps<"div">) => {
   return (
     <motion.div
-      className={`flex gap-2 p-4 transition-colors [&>[data-slot=label]]:transition-all [&>[data-slot=label]]:text-white ${
-        isActive ? "" : "[&>[data-slot=label]]:hidden"
+      className={`flex justify-center gap-2 py-4 px-6 font-semibold transition-colors [&>[data-slot=label]]:transition-all [&>[data-slot=label]]:text-white ${
+        isActive ? "flex-1" : "[&>[data-slot=label]]:hidden"
       }`}
       style={{
         borderRadius: 24,
