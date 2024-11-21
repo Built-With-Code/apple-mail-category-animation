@@ -59,6 +59,7 @@ export default function Home() {
               setActiveCategory(category.name);
             }}
             id={category.name}
+            key={category.name}
           >
             <motion.div layout>{category.icon}</motion.div>
             <motion.span data-slot="label">{category.displayName}</motion.span>
